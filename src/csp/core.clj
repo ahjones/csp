@@ -40,10 +40,22 @@
     (choice2 'around (ct 0) 'up (ct 1))
     (choice2 'up (ct (+ n 1)) 'down (ct (- n 1)))))
 
+(defn menu
+  "List all the symbols of A which can occur as the first event of P"
+  [A P]
+  (if-not (seq A)
+    ()
+    (if (= (P (first A)) 'bleep)
+      (menu (rest A) P)
+      (cons (first A) (menu (rest A) P)))))
+
 (defn example
   [x]
   (assert (= 'beep
              ( ( ( ( (vending 'coin) 'choc) 'coin) 'choc) 'other)))
 
   (assert (= 'bleep
-             ( ( ( (ct 0) 'around) 'up) 'around))))
+             ( ( ( (ct 0) 'around) 'up) 'around)))
+
+  (assert (= '(coin)
+             (menu '(coin badger) coin->stop))))
