@@ -49,6 +49,16 @@
       (menu (rest A) P)
       (cons (first A) (menu (rest A) P)))))
 
+(defn interact
+  "Interact with process P using symbols from k and alphabet A"
+  [A P k]
+  (cons (menu A P)
+        (if (= (first k) 'end)
+          ()
+          (if (= (P (first k)) 'bleep)
+            (cons 'bleep (interact A P (rest k)))
+            (interact A (P (first k)) (rest k))))))
+
 (defn example
   [x]
   (assert (= 'beep
